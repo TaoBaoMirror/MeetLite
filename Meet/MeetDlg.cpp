@@ -15,8 +15,9 @@
 
 
 // CMeetDlg 对话框
-
-#define ON_PHONE_NUMBER_GET_SUCCESS 0xE8000001
+#define ON_PHONENUMBER_GET_SUCCESS 0xE8000001
+#define ON_CHECKCODE_SEND_SUCCESS 0xE8000002
+#define ON_VIRYFICODE_GET_SUCCESS 0xE8000003
 
 
 
@@ -93,45 +94,50 @@ HCURSOR CMeetDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-void CMeetDlg::GetPhoneNumberThread(void* params)
-{
-	ThreadPram *pThreadPrams=(ThreadPram*)params;
-	ShortMassage vManager;
-	if(vManager.Login())
-	{
-		//while(true)
-		{
-			std::string phone=vManager.GetAPhoneNumber();
-			::SendMessage(pThreadPrams->mWND,MY_NOTIFICATION,(WPARAM)ON_PHONE_NUMBER_GET_SUCCESS,(LPARAM)phone.c_str());
-		}
-	}
-	GlobalFree(params);
-}
-void CMeetDlg::GetVirifyCodeThread(void* params)
-{
-	int cnt=0;
-	ShortMassage vManager;
-	while(cnt<5)
-	{
-		Sleep(10000);
-		vManager.GetVeryfyNumberForPhone((char*)params);
-	}
-}
 
 void CMeetDlg::OnBnClickedButtonStart()
 {
-	ThreadPram *pThreadPrams=(ThreadPram*)GlobalAlloc(0,sizeof(ThreadPram));
-	pThreadPrams->mWND=GetSafeHwnd();
-	CreateThread(0,0,(LPTHREAD_START_ROUTINE)GetPhoneNumberThread,(LPVOID)pThreadPrams,0,0);
+	CreateThread(0,0,(LPTHREAD_START_ROUTINE)ThreadGetPhone,(LPVOID)CWnd::m_hWnd,0,0);
+}
+void CMeetDlg::ThreadGetPhone(void* params)
+{
+	ShortMassage vManager;
+	if(vManager.Login())
+	{
+		std::string phone=vManager.GetAPhoneNumber();
+		if(phone!="")
+		::SendMessage((HWND)params,MY_NOTIFICATION,(WPARAM)ON_PHONENUMBER_GET_SUCCESS,(LPARAM)phone.c_str());
+	}
+}
+void CMeetDlg::ThreadSendCheckCodeRequest(void* params)
+{
+
+}
+void CMeetDlg::ThreadGetVirifyNumber(void* params)
+{
+
+}
+void CMeetDlg::ThreadCheckVerifyNumber(void* params)
+{
+
 }
 LRESULT CMeetDlg::OnNotification(WPARAM wParam, LPARAM lParam)
 {
 	int vResult=true;
 	int vMSGTYPE=wParam;
-	if(vMSGTYPE==ON_PHONE_NUMBER_GET_SUCCESS)
+	if(vMSGTYPE==ON_PHONENUMBER_GET_SUCCESS)
+	{
+		CreateThread(0,0,(LPTHREAD_START_ROUTINE)ThreadSendCheckCodeRequest,(LPVOID)CWnd::m_hWnd,0,0);//发送申请帐号信息
+		vResult=FALSE;
+	}
+	else if(vMSGTYPE==ON_VIRYFICODE_GET_SUCCESS)
 	{
 		char* phone=(char*)lParam;
 		CreateThread(0,0,(LPTHREAD_START_ROUTINE)GetVirifyCodeThread,phone,0,0);
+		vResult=FALSE;
+	}
+	else if(vMSGTYPE==ON_CHECKCODE_SEND_SUCCESS)
+	{
 		vResult=FALSE;
 	}
 	return vResult;

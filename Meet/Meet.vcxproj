@@ -105,6 +105,7 @@
     <ClInclude Include="CommonDef.h" />
     <ClInclude Include="HttpClient.h" />
     <ClInclude Include="Meet.h" />
+    <ClInclude Include="MeetClient.h" />
     <ClInclude Include="MeetDlg.h" />
     <ClInclude Include="MJGbkcode.h" />
     <ClInclude Include="MJGbkHelper.h" />
@@ -116,6 +117,7 @@
   <ItemGroup>
     <ClCompile Include="HttpClient.cpp" />
     <ClCompile Include="Meet.cpp" />
+    <ClCompile Include="MeetClient.cpp" />
     <ClCompile Include="MeetDlg.cpp" />
     <ClCompile Include="MJGbkcode.cpp" />
     <ClCompile Include="MJGbkhelper.cpp" />
