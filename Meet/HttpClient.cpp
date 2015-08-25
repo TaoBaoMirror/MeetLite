@@ -10,6 +10,9 @@ HttpClient::HttpClient(void)
 {
 	curl_global_init(CURL_GLOBAL_ALL);
 }
+
+
+
 HttpClient* HttpClient::sharedInstance()
 {
 	if(mClient==NULL)
@@ -54,6 +57,12 @@ std::string HttpClient::HttpGetAction(const char* host,struct curl_slist* header
 	GlobalFree(gb2312buf);
 	GlobalFree(vReadBuf.mBuf);
 	return response;
+}
+bool HttpClient::SetDelegate(const char*host ,const char* port)
+{
+	mHost=host;
+	mPort=port;
+	return 0;
 }
 std::string   HttpClient::HttpPostAction(const char* host,struct curl_slist* headers,const char* postDada)
 {

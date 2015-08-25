@@ -54,6 +54,9 @@
     <ClInclude Include="HttpClient.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="MeetClient.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Meet.cpp">
@@ -75,6 +78,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="HttpClient.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MeetClient.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

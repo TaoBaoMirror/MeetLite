@@ -11,8 +11,10 @@ class CMeetDlg : public CDialogEx
 // 构造
 public:
 	CMeetDlg(CWnd* pParent = NULL);	// 标准构造函数
-	static void GetPhoneNumberThread(void* params);
-	static void GetVirifyCodeThread(void* params);
+	static void ThreadGetPhone(void* params);
+	static void ThreadSendCheckCodeRequest(void* params);
+	static void ThreadGetVirifyNumber(void* params);
+	static void ThreadCheckVerifyNumber(void* params);
 // 对话框数据
 	enum { IDD = IDD_MEET_DIALOG };
 
